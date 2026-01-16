@@ -1,14 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 
-export default function HomeScreen() {
+export default function AccountScreen() {
 
 const { width, height } = useWindowDimensions();
-// const { logout } = useAuth();
+const router = useRouter();
 
 console.log(width, height)
 
   const handleLogout = () => {
-    // logout();
+    router.replace("/(auth)/login");
   };
 
   return (
@@ -24,9 +25,9 @@ console.log(width, height)
         {/* <View style={[styles.box, styles.box2]}></View>
         <View style={[styles.box, styles.box3]}></View> */}
 
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Pressable style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
+        </Pressable>
 
       </View>
     </>
