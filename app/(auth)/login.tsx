@@ -1,9 +1,6 @@
-import { fetchHelloData } from "@/services/test";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useLogin } from "@/hooks/useLogin";
+import React from "react";
 import {
-  ActivityIndicator,
-  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,34 +8,18 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [apiResponse, setApiResponse] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const handleLogin = () => {
-    if (username === "admin" && password === "admin") {
-      router.replace("/(app)/(tabs)");
-    } else {
-      Alert.alert("Error", "Usuario o contraseña incorrectos");
-    }
-  };
-
-  const handleCallApi = async () => {
-    setLoading(true);
-    try {
-      const response = await fetchHelloData();
-      setApiResponse(response);
-    } catch (error) {
-      Alert.alert("Error", "No se pudo conectar a la API");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    apiResponse,
+    loading,
+    handleLogin,
+  } = useLogin();
 
   return (
     <ScrollView style={styles.container}>
@@ -63,11 +44,14 @@ export default function LoginScreen() {
         />
 
         <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Ingresar</Text>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Ingresar</Text>
+          )}
         </Pressable>
 
-
-        <Pressable
+        {/* <Pressable
           style={styles.apiButton}
           onPress={handleCallApi}
           disabled={loading}
@@ -77,7 +61,7 @@ export default function LoginScreen() {
           ) : (
             <Text style={styles.buttonText}>Llamar API</Text>
           )}
-        </Pressable>
+        </Pressable> */}
 
         {apiResponse && (
           <View style={styles.responseContainer}>
